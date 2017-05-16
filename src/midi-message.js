@@ -23,7 +23,7 @@ export function getNoteValue(data, offset) {
 }
 
 export function getNoteOctave(data, offset) {
-	return Math.floor(data.getUint8(offset) / 12 - 1)
+	return Math.floor(data.getUint8(offset) / 12)
 }
 
 export function getNote(data, offset) {
