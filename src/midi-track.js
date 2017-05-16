@@ -34,7 +34,7 @@ export default function MidiTrack(data, offset) {
 	const events = (offset => {
 		let events = []
 		for (;;) {
-			let event = nextEvent(data, offset)
+			const event = nextEvent(data, offset)
 			events.push(event)
 			if (Meta.END_OF_TRACK === event.type) {
 				RunningStatus.reset()

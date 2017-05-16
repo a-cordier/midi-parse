@@ -1,5 +1,5 @@
 import {
-	getVariableLengthValue
+	getVariableLengthQuantity
 } from 'midi-event'
 import {
 	getBytes
@@ -36,7 +36,7 @@ export function getTempo(data, offset) {
 export function SpecificEvent(data, offset) {
 	const type = Meta.SPECIFIC
 	offset += 1
-	const length = getVariableLengthValue(data, offset)
+	const length = getVariableLengthQuantity(data, offset)
 	offset = length.next
 	const dataBytes = getBytes(data, offset, length.value)
 	offset += length.value

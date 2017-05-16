@@ -21,12 +21,12 @@ fileInput.addEventListener('change', function() {
 		midiFile.tracks = midiFile.tracks
 			.map(track => {
 				track.events
-				.forEach((event) => {
-					event.type = Object.keys(eventTypes).find(key => eventTypes[key] === event.type)
-				})
+					.forEach((event) => {
+						event.type = Object.keys(eventTypes).find(key => eventTypes[key] === event.type)
+					})
 				return track
 			})
-		let output = JSON.stringify(midiFile,undefined, 4)
+		let output = JSON.stringify(midiFile, undefined, 4)
 		document.querySelector('.output').value = output
 		document.querySelector('.output-block').classList.remove('hidden')
 	}

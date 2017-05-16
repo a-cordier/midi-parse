@@ -51,7 +51,6 @@ const config = function(env) {
 		entry: {
 			// eslint-disable-next-line no-undef
 			app: path.join(__dirname, 'src', 'main.js')
-
 		},
 		output: {
       // eslint-disable-next-line no-undef
