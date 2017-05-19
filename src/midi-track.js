@@ -3,7 +3,7 @@ import { Meta } from 'meta-event'
 import { getString } from 'midi-file'
 import RunningStatus from 'running-status'
 
-export default function MidiTrack(data, offset) {
+export function MidiTrack(data, offset) {
 
 	const header = (function header() {
 		return {

@@ -84,7 +84,7 @@ export function getPitchBend(data, offset) {
 	}
 }
 
-export default function MidiMessage(data, offset) {
+export function MidiMessage(data, offset) {
 	if (isRunningStatus(data, offset)) {
 		RunningStatus.status = (data.getUint8(offset) >> 4)
 		offset += 1

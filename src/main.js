@@ -1,4 +1,4 @@
-import { default as MidiFile } from 'midi-file'
+import { MidiFile } from 'midi-file'
 import { Meta } from 'meta-event'
 import { Status } from 'midi-message'
 import 'style.scss'

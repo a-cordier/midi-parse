@@ -1,5 +1,5 @@
-import MidiMessage from 'midi-message'
-import MetaEvent from 'meta-event'
+import { MidiMessage } from 'midi-message'
+import { MetaEvent } from 'meta-event'
 
 export function isMetaEvent(data, offset) {
 	return 0xFF === data.getUint8(offset)

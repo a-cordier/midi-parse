@@ -1,5 +1,5 @@
 import times from 'lodash.times'
-import MidiTrack from 'midi-track'
+import { MidiTrack } from 'midi-track'
 
 export function isEof(data, offset) {
 	return offset >= data.byteLength
@@ -17,7 +17,7 @@ export function getBytes(data, offset, length) {
 	return times(length, i => data.getUint8(offset + i))
 }
 
-export default function MidiFile(data) {
+export function MidiFile(data) {
 
 	const header = (function header() {
 		return {
