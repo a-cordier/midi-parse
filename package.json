@@ -1,6 +1,6 @@
 {
   "name": "midi-parse",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Javascript MIDI file parser",
   "main": "./public/index.js",
   "scripts": {
