@@ -2,6 +2,7 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const CleanPlugin = require('clean-webpack-plugin')
 
 function isProd(env) {
 	return env === 'prod'
@@ -42,6 +43,7 @@ function getPluginConfig(env) {
 	]
 	if (isProd(env)) {
 		plugins.push(new UglifyJSPlugin())
+		plugins.push(new CleanPlugin(['dist']))
 	}
 	return plugins
 }

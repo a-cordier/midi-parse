@@ -1,6 +1,6 @@
-import { MidiFile } from 'midi-file'
-import { Meta } from 'meta-event'
-import { Status } from 'midi-message'
+import { MidiFile } from './midi-file'
+import { Meta } from './meta-event'
+import { Status } from './midi-message'
 import 'style.scss'
 
 const fileInput = document.querySelector('#midi-file')

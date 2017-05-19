@@ -1,12 +1,13 @@
 {
-  "name": "midi-file",
-  "version": "1.0.0",
+  "name": "midi-parse",
+  "version": "1.0.2",
   "description": "Javascript MIDI file parser",
-  "main": "./dist/bundle.js",
+  "main": "./public/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server",
-    "build": "webpack --env=prod"
+    "build": "webpack --env=prod",
+    "prepublish": "babel src --out-dir public --ignore main.js"
   },
   "repository": {
     "type": "git",
@@ -24,11 +25,13 @@
   },
   "homepage": "https://github.com/a-cordier/midi-file#readme",
   "devDependencies": {
+    "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.0.0",
-    "babel-preset-es2015": "^6.24.1",
     "babel-polyfill": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "clean-webpack-plugin": "^0.1.16",
     "css-loader": "^0.28.0",
     "eslint": "^3.19.0",
     "eslint-config-webpack": "^1.2.1",

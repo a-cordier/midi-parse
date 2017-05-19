@@ -1,5 +1,5 @@
 import times from 'lodash.times'
-import { MidiTrack } from 'midi-track'
+import { MidiTrack } from './midi-track'
 
 export function isEof(data, offset) {
 	return offset >= data.byteLength

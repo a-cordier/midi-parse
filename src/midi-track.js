@@ -1,7 +1,7 @@
-import { default as MidiEvent } from 'midi-event'
-import { Meta } from 'meta-event'
-import { getString } from 'midi-file'
-import RunningStatus from 'running-status'
+import { MidiEvent } from './midi-event'
+import { Meta } from './meta-event'
+import { getString } from './midi-file'
+import { RunningStatus } from './running-status'
 
 export function MidiTrack(data, offset) {
 

@@ -1,5 +1,5 @@
-import { MidiMessage } from 'midi-message'
-import { MetaEvent } from 'meta-event'
+import { MidiMessage } from './midi-message'
+import { MetaEvent } from './meta-event'
 
 export function isMetaEvent(data, offset) {
 	return 0xFF === data.getUint8(offset)
@@ -33,7 +33,7 @@ export function getVariableLengthQuantity(data, offset) {
 	throw new RangeError('4 bytes variable length value limit exceded')
 }
 
-export default function MidiEvent(data, offset) {
+export function MidiEvent(data, offset) {
 	const deltatime = getVariableLengthQuantity(data, offset)
 	const event = {
 		delta: deltatime.value

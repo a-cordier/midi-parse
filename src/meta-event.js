@@ -1,5 +1,5 @@
-import { getVariableLengthQuantity } from 'midi-event'
-import { getBytes } from 'midi-file'
+import { getVariableLengthQuantity } from './midi-event'
+import { getBytes } from './midi-file'
 
 export const Meta = Object.freeze({
 	SEQUENCE_NUMBER: 0x00,
@@ -62,7 +62,7 @@ export function EndOfTrackEvent(_, offset) {
 	}
 }
 
-export default function MetaEvent(data, offset) {
+export function MetaEvent(data, offset) {
 	offset += 1 // FF meta event marker
 	const value = data.getUint8(offset) // event type
 	switch(value) {

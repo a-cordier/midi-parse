@@ -1,4 +1,4 @@
-import RunningStatus from 'running-status'
+import { RunningStatus } from './running-status'
 
 export const Status = Object.freeze({
 	NOTE_OFF: 0x08,

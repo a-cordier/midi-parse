@@ -1,4 +1,4 @@
-export default (function RunningStatus() {
+export const RunningStatus = (() => {
 	let status = null
 	return {
 		reset() {

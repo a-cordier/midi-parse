@@ -1,6 +1,5 @@
 node_modules
-public
 dist
-*.swp
 *.log
 .sass-cache
+*.swp
