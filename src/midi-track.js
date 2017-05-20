@@ -5,13 +5,11 @@ import { RunningStatus } from './running-status'
 
 export function MidiTrack(data, offset) {
 
-	const header = (function header() {
-		return {
-			type: getString(data, offset, 4),
-			length: data.getUint32(offset + 4),
-			next: offset + 8
-		}
-	})()
+	const header = {
+		type: getString(data, offset, 4),
+		length: data.getUint32(offset + 4),
+		next: offset + 8
+	}
 
 	if ('MTrk' !== header.type) {
 		throw new Error('Bad MIDI track format')

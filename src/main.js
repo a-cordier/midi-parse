@@ -15,7 +15,7 @@ fileInput.addEventListener('change', function() {
 		midiFile.tracks = midiFile.tracks
 			.map(track => {
 				track.events
-					.forEach((event) => {
+					.forEach(event => {
 						event.type = Object.keys(eventTypes).find(key => eventTypes[key] === event.type)
 					})
 				return track
