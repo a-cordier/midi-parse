@@ -19,16 +19,15 @@ export function getBytes(data, offset, length) {
 
 export function MidiFile(data) {
 
-	const header = (function header() {
-		return {
-			type: getString(data, 0, 4),
-			length: data.getUint32(4),
-			format: data.getUint16(8),
-			tracks: data.getUint16(10),
-			division: data.getUint16(12),
-			next: 14
-		}
-	})()
+	const header = {
+		type: getString(data, 0, 4),
+		length: data.getUint32(4),
+		format: data.getUint16(8),
+		tracks: data.getUint16(10),
+		division: data.getUint16(12),
+		next: 14
+	}
+
 
 	if ('MThd' !== header.type) {
 		throw new Error('Bad MIDI file format')
@@ -44,8 +43,6 @@ export function MidiFile(data) {
 
 	return {
 		tracks,
-		get division() {
-			return header.division
-		}
+		division: header.division
 	}
 }
