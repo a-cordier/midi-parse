@@ -3,29 +3,23 @@ import { Meta } from './meta-event'
 import { getString } from './midi-file'
 import { RunningStatus } from './running-status'
 
-export function MidiTrack(data, offset) {
-
+export function MidiTrack(data, offset) { /* eslint-disable no-param-reassign, no-shadow */
 	const header = {
 		type: getString(data, offset, 4),
 		length: data.getUint32(offset + 4),
-		next: offset + 8
+		next: offset + 8,
 	}
 
 	if ('MTrk' !== header.type) {
 		throw new Error('Bad MIDI track format')
 	}
 
-	function nextEvent(data, offset) {
-		const event = MidiEvent(data, offset)
-		return event
-	}
-
 	offset = header.next
 
-	const events = (offset => {
-		let events = []
+	const events = ((offset) => {
+		const events = []
 		for (;;) {
-			const event = nextEvent(data, offset)
+			const event = MidiEvent(data, offset)
 			events.push(event)
 			if (Meta.END_OF_TRACK === event.type) {
 				RunningStatus.reset()
@@ -42,6 +36,6 @@ export function MidiTrack(data, offset) {
 		 */
 		get length() {
 			return header.length
-		}
+		},
 	}
 }

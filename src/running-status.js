@@ -9,6 +9,6 @@ export const RunningStatus = (() => {
 		},
 		set status(value) {
 			status = value
-		}
+		},
 	}
 })()

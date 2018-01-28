@@ -1,13 +1,47 @@
 {
   "name": "midi-parse",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Javascript MIDI file parser",
-  "main": "./public/index.js",
+  "main": "./dist/midi-parse.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server",
+    "lint": "eslint .",
+    "test": "nyc ava --verbose",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "build": "webpack --env=prod",
-    "prepublish": "babel src --out-dir public --ignore main.js"
+    "prepublish": "npm run build"
+  },
+  "ava": {
+    "files": [
+      "src/**/*.spec.js"
+    ],
+    "source": [
+      "src/**/*.js",
+      "!src/**/*.spec.js"
+    ],
+    "require": [
+      "babel-register"
+    ],
+    "babel": {
+      "presets": [
+        "env",
+        "@ava/stage-4"
+      ],
+      "plugins": [
+        [
+          "transform-runtime",
+          {
+            "polyfill": false
+          }
+        ]
+      ]
+    }
+  },
+  "nyc": {
+    "exclude": [
+      "**/*.spec.js",
+      "**/*.mock.js",
+      "build"
+    ]
   },
   "repository": {
     "type": "git",
@@ -25,27 +59,34 @@
   },
   "homepage": "https://github.com/a-cordier/midi-file#readme",
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-core": "^6.24.1",
+    "@ava/babel-preset-stage-4": "^1.1.0",
+    "ava": "^0.22.0",
+    "babel-preset-2017": "^0.0.0",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.0.0",
-    "babel-polyfill": "^6.23.0",
-    "babel-preset-es2015": "^6.24.1",
-    "clean-webpack-plugin": "^0.1.16",
-    "css-loader": "^0.28.0",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-es2017": "^6.24.1",
+    "babel-preset-flow": "^6.23.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "clean-webpack-plugin": "^0.1.17",
+    "coveralls": "^3.0.0",
     "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^15",
     "eslint-config-webpack": "^1.2.1",
     "eslint-loader": "^1.7.1",
-    "extract-text-webpack-plugin": "^2.1.0",
-    "html-webpack-plugin": "^2.28.0",
-    "node-sass": "^4.5.2",
-    "sass-loader": "^6.0.3",
-    "style-loader": "^0.16.1",
-    "uglifyjs-webpack-plugin": "^0.4.3",
-    "webpack": "^2.4.1",
-    "webpack-dev-server": "^2.4.4"
+    "eslint-plugin-import": "^2",
+    "eslint-plugin-jsx-a11y": "^5",
+    "eslint-plugin-react": "^7",
+    "nyc": "^11.3.0",
+    "sinon": "^3.2.1",
+    "webpack": "^3.6.0"
   },
   "dependencies": {
-    "lodash.times": "^4.3.2"
+    "ramda": "^0.25.0"
   }
 }

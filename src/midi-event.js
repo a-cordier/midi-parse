@@ -17,7 +17,7 @@ export function isVariableLengthQuantityDelimiter(value) {
 	return 0 === (0x80 & value)
 }
 
-export function getVariableLengthQuantity(data, offset) {
+export function getVariableLengthQuantity(data, offset) { /* eslint-disable no-plusplus */
 	let [val, currentByteValue] = [0, 0]
 	for (let i = 0; i < 4; i++) {
 		currentByteValue = data.getUint8(offset + i)
@@ -33,12 +33,12 @@ export function getVariableLengthQuantity(data, offset) {
 	throw new RangeError('4 bytes variable length value limit exceded')
 }
 
-export function MidiEvent(data, offset) {
-	const deltatime = getVariableLengthQuantity(data, offset)
+export function MidiEvent(data, offset) { /* eslint-disable no-param-reassign */
+	const deltaTime = getVariableLengthQuantity(data, offset)
 	const event = {
-		delta: deltatime.value
+		delta: deltaTime.value,
 	}
-	offset = deltatime.next
+	offset = deltaTime.next
 	if (isMetaEvent(data, offset)) {
 		return Object.assign(MetaEvent(data, offset), event)
 	}

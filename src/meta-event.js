@@ -16,20 +16,20 @@ export const Meta = Object.freeze({
 	SMPTE_OFFSET: 0x54,
 	TIME_SIGNATURE: 0x58,
 	KEY_SIGNATURE: 0x59,
-	SPECIFIC: 0x7F
+	SPECIFIC: 0x7F,
 })
 
 export function getTempo(data, offset) {
-	let tempo = (data.getUint8(offset) << 16) +
+	const tempo = (data.getUint8(offset) << 16) +
 		(data.getUint8(offset + 1) << 8) +
 		(data.getUint8(offset + 1))
 	return {
-		data: 6 * 1E6 / tempo,
-		next: offset + 3
+		data: (6 * 1E6) / tempo,
+		next: offset + 3,
 	}
 }
 
-export function SpecificEvent(data, offset) {
+export function SpecificEvent(data, offset) { /* eslint-disable no-param-reassign */
 	const type = Meta.SPECIFIC
 	offset += 1
 	const length = getVariableLengthQuantity(data, offset)
@@ -39,38 +39,38 @@ export function SpecificEvent(data, offset) {
 	return {
 		type,
 		data: dataBytes,
-		next: offset
+		next: offset,
 	}
 }
 
-export function SetTempoEvent(data, offset) {
+export function SetTempoEvent(data, offset) { /* eslint-disable no-param-reassign, no-plusplus */
 	offset += 2
-	let t = (data.getUint8(offset++) << 16) +
+	const t = (data.getUint8(offset++) << 16) +
 		(data.getUint8(offset++) << 8) +
 		(data.getUint8(offset))
 	return {
 		type: Meta.SET_TEMPO,
-		value: 6 * 1E7 / t,
-		next: offset + 1
+		value: (6 * 1E7) / t,
+		next: offset + 1,
 	}
 }
 
 export function EndOfTrackEvent(_, offset) {
 	return {
 		type: Meta.END_OF_TRACK,
-		next: offset + 2
+		next: offset + 2,
 	}
 }
 
-export function MetaEvent(data, offset) {
+export function MetaEvent(data, offset) { /* eslint-disable no-param-reassign */
 	offset += 1 // FF meta event marker
 	const value = data.getUint8(offset) // event type
-	switch(value) {
-		case Meta.SET_TEMPO:
-			return SetTempoEvent(data, offset)
-		case Meta.END_OF_TRACK:
-			return EndOfTrackEvent(data, offset)
-		default:
-			return SpecificEvent(data, offset)
+	switch (value) {
+	case Meta.SET_TEMPO:
+		return SetTempoEvent(data, offset)
+	case Meta.END_OF_TRACK:
+		return EndOfTrackEvent(data, offset)
+	default:
+		return SpecificEvent(data, offset)
 	}
 }

@@ -1,84 +1,57 @@
 const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const CleanPlugin = require('clean-webpack-plugin')
 
-function isProd(env) {
-	return env === 'prod'
-}
+const isProd = env => env === 'prod'
+const isDev = env => !isProd(env)
 
-function isDev(env) {
-	return !isProd(env)
-}
-
-function getSassConfig(env) {
-	return {
-		use: [{
-			loader: 'css-loader',
-			options: {
-				minimize: isProd(env),
-				sourceMap: isDev(env)
-			}
-		},
-		{
-			loader: 'sass-loader',
-			options: {
-				sourceMap: isDev(env)
-			}
-		}]
-	}
-}
-
-function getPluginConfig(env) {
-	const plugins = [
-		new HtmlWebpackPlugin({
-      // eslint-disable-next-line no-undef
-			template: path.join(__dirname, 'src', 'index.html')
-		}),
-		new ExtractTextPlugin({ // define where to save the file
-			filename: 'style.css',
-			allChunks: true,
-		})
-	]
+const getPluginConfig = (env) => {
+	const plugins = []
 	if (isProd(env)) {
-		plugins.push(new UglifyJSPlugin())
 		plugins.push(new CleanPlugin(['dist']))
 	}
 	return plugins
 }
 
-const config = function(env) {
-	return {
-		entry: {
+const config = env => ({
+	entry: {
 			// eslint-disable-next-line no-undef
-			app: path.join(__dirname, 'src', 'main.js')
-		},
-		output: {
-      // eslint-disable-next-line no-undef
-			path: path.join(__dirname, 'dist'),
-			filename: '[name].[chunkhash].js'
-		},
-		devtool: isDev(env) ? 'source-map' : false,
-		module: {
-			loaders: [{
-				test: /\.js$/,
-				exclude: /node_modules/,
-				loader: 'babel-loader'
-			},
+		'midi-parse': path.join(__dirname, 'src', 'index.js'),
+	},
+	output: {
+		filename: '[name].js',
+		path: path.resolve(__dirname, 'dist'),
+		library: 'mid-parse',
+		libraryTarget: 'commonjs',
+	},
+	devtool: isDev(env) ? 'source-map' : false,
+	module: {
+		rules: [
 			{
-				test: /\.scss$/,
-				loader: ExtractTextPlugin.extract(getSassConfig(env))
-			}]
+				test: /\.js$/,
+				use: {
+					loader: 'babel-loader',
+					options: {
+						presets: ['es2017'],
+						plugins: [
+							'transform-runtime',
+							'transform-es2015-block-scoping',
+						],
+					},
+				},
+				exclude: /node_modules/,
+			},
+		],
+	},
+	resolve: {
+		extensions: ['.js'],
+		alias: {
+			'@': './src/',
 		},
-		resolve: {
-			modules: [
-				path.resolve('./src'),
-				path.resolve('./node_modules')
-			]
-		},
-		plugins: getPluginConfig(env)
-	}
-}
+		modules: [
+			path.resolve('./node_modules'),
+		],
+	},
+	plugins: getPluginConfig(env),
+})
 
 module.exports = config
