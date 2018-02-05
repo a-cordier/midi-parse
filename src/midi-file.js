@@ -40,5 +40,5 @@ export function MidiFile(data) {
 		return track
 	})
 
-	return Object.assign({ tracks }, header)
+	return Object.assign({ tracks }, { header })
 }
