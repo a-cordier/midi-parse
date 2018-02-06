@@ -6,8 +6,7 @@ export function isEof(data, offset) {
 }
 
 export function getString(data, offset, length) {
-	return times(length, i => String.fromCharCode(data.getUint8(offset + i)))
-		.join('')
+	return times(i => String.fromCharCode(data.getUint8(offset + i)), length).join('')
 }
 
 export function isNewTrack(data, offset) {
@@ -15,7 +14,7 @@ export function isNewTrack(data, offset) {
 }
 
 export function getBytes(data, offset, length) {
-	return times(length, i => data.getUint8(offset + i))
+	return times(i => data.getUint8(offset + i), length)
 }
 
 export function MidiFile(data) {
@@ -27,18 +26,17 @@ export function MidiFile(data) {
 		division: data.getUint16(12),
 		next: 14,
 	}
-
 	if ('MThd' !== header.type) {
 		throw new Error('Bad MIDI file format')
 	}
 
 	let offset = header.next
 
-	const tracks = times(header.tracks, () => {
+	const tracks = times(() => {
 		const track = MidiTrack(data, offset)
 		offset += (track.length + 8) // track data length + track header length
 		return track
-	})
+	}, header.tracks)
 
 	return Object.assign({ tracks }, { header })
 }
