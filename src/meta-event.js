@@ -1,5 +1,4 @@
-import { getVariableLengthQuantity } from './midi-event'
-import { getBytes } from './midi-file'
+import { getBytes, getString, getVariableLengthQuantity } from './utils'
 
 export const Meta = Object.freeze({
 	SEQUENCE_NUMBER: 0x00,
@@ -19,25 +18,24 @@ export const Meta = Object.freeze({
 	SPECIFIC: 0x7F,
 })
 
-export function getTempo(data, offset) {
-	const tempo = (data.getUint8(offset) << 16) +
-		(data.getUint8(offset + 1) << 8) +
-		(data.getUint8(offset + 1))
+export function InstrumentNameEvent(data, offset) {
+	const length = getVariableLengthQuantity(data, offset)
+	const text = getString(data, offset, length.value)
 	return {
-		data: (6 * 1E6) / tempo,
-		next: offset + 3,
+		type: Meta.INSTRUMENT_NAME,
+		data: text,
+		next: offset + length.value
 	}
 }
 
 export function SpecificEvent(data, offset) { /* eslint-disable no-param-reassign */
-	const type = Meta.SPECIFIC
 	offset += 1
 	const length = getVariableLengthQuantity(data, offset)
 	offset = length.next
 	const dataBytes = getBytes(data, offset, length.value)
 	offset += length.value
 	return {
-		type,
+		type: Meta.SPECIFIC,
 		data: dataBytes,
 		next: offset,
 	}
@@ -70,6 +68,8 @@ export function MetaEvent(data, offset) { /* eslint-disable no-param-reassign */
 		return SetTempoEvent(data, offset)
 	case Meta.END_OF_TRACK:
 		return EndOfTrackEvent(data, offset)
+	case Meta.INSTRUMENT_NAME:
+		return InstrumentNameEvent(data, offset)
 	default:
 		return SpecificEvent(data, offset)
 	}

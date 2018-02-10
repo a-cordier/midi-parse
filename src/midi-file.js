@@ -1,21 +1,7 @@
 import { times } from 'ramda'
+import { getString } from './utils'
 import { MidiTrack } from './midi-track'
 
-export function isEof(data, offset) {
-	return offset >= data.byteLength
-}
-
-export function getString(data, offset, length) {
-	return times(i => String.fromCharCode(data.getUint8(offset + i)), length).join('')
-}
-
-export function isNewTrack(data, offset) {
-	return 'MTrk' === getString(data, offset, 4)
-}
-
-export function getBytes(data, offset, length) {
-	return times(i => data.getUint8(offset + i), length)
-}
 
 export function MidiFile(data) {
 	const header = {
@@ -38,5 +24,5 @@ export function MidiFile(data) {
 		return track
 	}, header.tracks)
 
-	return Object.assign({ tracks }, { header })
+	return Object.assign({ header }, { tracks })
 }

@@ -1,6 +1,6 @@
 import { MidiEvent } from './midi-event'
 import { Meta } from './meta-event'
-import { getString } from './midi-file'
+import { getString } from './utils'
 import { RunningStatus } from './running-status'
 
 export function MidiTrack(data, offset) { /* eslint-disable no-param-reassign, no-shadow */
