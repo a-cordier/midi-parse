@@ -46,7 +46,10 @@ export function ControlChange(data, offset) {
 export function ProgramChange(data, offset) {
 	return {
 		type: Status.PROGRAM_CHANGE,
-		value: data.getUint8(offset),
+		data: {
+			channel: RunningStatus.channel,
+			value: data.getUint8(offset)
+		},
 		next: offset + 1,
 	}
 }
@@ -71,6 +74,7 @@ export function PitchBend(data, offset) {
 export function MidiMessage(data, offset) { /* eslint-disable no-param-reassign */
 	if (isRunningStatus(data, offset)) {
 		RunningStatus.status = (data.getUint8(offset) >> 4)
+		RunningStatus.channel = data.getUint8(offset) & 0XF
 		offset += 1
 	}
 	switch (RunningStatus.status) {
