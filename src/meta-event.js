@@ -19,12 +19,22 @@ export const Meta = Object.freeze({
 })
 
 export function InstrumentNameEvent(data, offset) {
-	const length = getVariableLengthQuantity(data, offset)
-	const text = getString(data, offset, length.value)
+	const length = data.getUint8(offset + 1)
+	const text = getString(data, offset, length)
 	return {
 		type: Meta.INSTRUMENT_NAME,
 		data: text,
-		next: offset + length.value
+		next: offset + length
+	}
+}
+
+export function SequenceNameEvent(data, offset) {
+	const length = data.getUint8(offset + 1)
+	const text = getString(data, offset + 2, length)
+	return {
+		type: Meta.SEQUENCE_NAME,
+		data: text,
+		next: offset + length + 2
 	}
 }
 
@@ -70,6 +80,8 @@ export function MetaEvent(data, offset) { /* eslint-disable no-param-reassign */
 		return EndOfTrackEvent(data, offset)
 	case Meta.INSTRUMENT_NAME:
 		return InstrumentNameEvent(data, offset)
+	case Meta.SEQUENCE_NAME:
+		return SequenceNameEvent(data, offset)
 	default:
 		return SpecificEvent(data, offset)
 	}
