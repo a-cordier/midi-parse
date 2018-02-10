@@ -20,11 +20,11 @@ export const Meta = Object.freeze({
 
 export function InstrumentNameEvent(data, offset) {
 	const length = data.getUint8(offset + 1)
-	const text = getString(data, offset, length)
+	const text = getString(data, offset + 2, length)
 	return {
 		type: Meta.INSTRUMENT_NAME,
 		data: text,
-		next: offset + length
+		next: offset + length + 2
 	}
 }
 
