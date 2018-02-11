@@ -1,3 +1,4 @@
+import { cond, equals, identity } from 'ramda'
 import { isRunningStatus } from './utils'
 import { RunningStatus } from './running-status'
 
@@ -16,6 +17,7 @@ export function Note(data, offset) {
 		data: {
 			value: data.getUint8(offset),
 			velocity: data.getUint8(offset + 1),
+			channel: RunningStatus.channel,
 		},
 		next: offset + 2,
 	}
@@ -27,6 +29,7 @@ export function NoteAfterTouch(data, offset) {
 		data: {
 			note: data.getUint8(offset),
 			value: data.getUint8(offset + 1),
+			channel: RunningStatus.channel
 		},
 		next: offset + 2,
 	}
@@ -38,6 +41,7 @@ export function ControlChange(data, offset) {
 		data: {
 			control: data.getUint8(offset),
 			value: data.getUint8(offset + 1),
+			channel: RunningStatus.channel,
 		},
 		next: offset + 2,
 	}
@@ -47,8 +51,8 @@ export function ProgramChange(data, offset) {
 	return {
 		type: Status.PROGRAM_CHANGE,
 		data: {
-			channel: RunningStatus.channel,
-			value: data.getUint8(offset)
+			value: data.getUint8(offset),
+			channel: RunningStatus.channel
 		},
 		next: offset + 1,
 	}
@@ -57,7 +61,10 @@ export function ProgramChange(data, offset) {
 export function ChannelAfterTouch(data, offset) {
 	return {
 		type: Status.CHANNEL_AFTER_TOUCH,
-		value: data.getUint8(offset),
+		data: {
+			value: data.getUint8(offset),
+			channel: RunningStatus.channel,
+		},
 		next: offset + 1,
 	}
 }
@@ -68,6 +75,7 @@ export function PitchBend(data, offset) {
 		b1: data.getUint8(offset),
 		b2: data.getUint8(offset),
 		next: offset + 2,
+		channel: RunningStatus.channel,
 	}
 }
 
@@ -77,22 +85,16 @@ export function MidiMessage(data, offset) { /* eslint-disable no-param-reassign 
 		RunningStatus.channel = data.getUint8(offset) & 0XF
 		offset += 1
 	}
-	switch (RunningStatus.status) {
-	case Status.NOTE_OFF:
-		return Object.assign(Note(data, offset), { type: Status.NOTE_OFF })
-	case Status.NOTE_ON:
-		return Object.assign(Note(data, offset), { type: Status.NOTE_ON })
-	case Status.NOTE_AFTER_TOUCH:
-		return NoteAfterTouch(data, offset)
-	case Status.CONTROL_CHANGE:
-		return ControlChange(data, offset)
-	case Status.PROGRAM_CHANGE:
-		return ProgramChange(data, offset)
-	case Status.CHANNEL_AFTER_TOUCH:
-		return ChannelAfterTouch(data, offset)
-	case Status.PITCH_BEND:
-		return PitchBend(data, offset)
-	default:
-		throw new Error('Unknown running status')
-	}
+
+	return cond([
+		[ equals(Status.NOTE_ON), 				() => Object.assign(Note(data, offset), { type: Status.NOTE_ON }) ],
+		[ equals(Status.NOTE_OFF), 				() => Object.assign(Note(data, offset), { type: Status.NOTE_OFF }) ],
+		[ equals(Status.NOTE_AFTER_TOUCH), 		() => NoteAfterTouch(data, offset) ],
+		[ equals(Status.CONTROL_CHANGE), 		() => ControlChange(data, offset) ],
+		[ equals(Status.PROGRAM_CHANGE), 		() => ProgramChange(data, offset) ],
+		[ equals(Status.CHANNEL_AFTER_TOUCH), 	() => ChannelAfterTouch(data, offset) ],
+		[ equals(Status.PITCH_BEND), 			() => PitchBend(data, offset) ],
+		[ identity(true),						() => { throw new Error('Unknown running status') }],
+	])(RunningStatus.status)
+
 }
