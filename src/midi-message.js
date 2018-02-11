@@ -29,7 +29,7 @@ export function NoteAfterTouch(data, offset) {
 		data: {
 			note: data.getUint8(offset),
 			value: data.getUint8(offset + 1),
-			channel: RunningStatus.channel
+			channel: RunningStatus.channel,
 		},
 		next: offset + 2,
 	}
@@ -52,7 +52,7 @@ export function ProgramChange(data, offset) {
 		type: Status.PROGRAM_CHANGE,
 		data: {
 			value: data.getUint8(offset),
-			channel: RunningStatus.channel
+			channel: RunningStatus.channel,
 		},
 		next: offset + 1,
 	}
@@ -85,16 +85,32 @@ export function MidiMessage(data, offset) { /* eslint-disable no-param-reassign 
 		RunningStatus.channel = data.getUint8(offset) & 0XF
 		offset += 1
 	}
-
 	return cond([
-		[ equals(Status.NOTE_ON), 				() => Object.assign(Note(data, offset), { type: Status.NOTE_ON }) ],
-		[ equals(Status.NOTE_OFF), 				() => Object.assign(Note(data, offset), { type: Status.NOTE_OFF }) ],
-		[ equals(Status.NOTE_AFTER_TOUCH), 		() => NoteAfterTouch(data, offset) ],
-		[ equals(Status.CONTROL_CHANGE), 		() => ControlChange(data, offset) ],
-		[ equals(Status.PROGRAM_CHANGE), 		() => ProgramChange(data, offset) ],
-		[ equals(Status.CHANNEL_AFTER_TOUCH), 	() => ChannelAfterTouch(data, offset) ],
-		[ equals(Status.PITCH_BEND), 			() => PitchBend(data, offset) ],
-		[ identity(true),						() => { throw new Error('Unknown running status') }],
+		[
+			equals(Status.NOTE_ON),
+			() => Object.assign(Note(data, offset), { type: Status.NOTE_ON }),
+		],
+		[
+			equals(Status.NOTE_OFF),
+			() => Object.assign(Note(data, offset), { type: Status.NOTE_OFF })],
+		[
+			equals(Status.NOTE_AFTER_TOUCH),
+			() => NoteAfterTouch(data, offset)],
+		[
+			equals(Status.CONTROL_CHANGE),
+			() => ControlChange(data, offset)],
+		[
+			equals(Status.PROGRAM_CHANGE),
+			() => ProgramChange(data, offset)],
+		[
+			equals(Status.CHANNEL_AFTER_TOUCH),
+			() => ChannelAfterTouch(data, offset)],
+		[
+			equals(Status.PITCH_BEND),
+			() => PitchBend(data, offset)],
+		[
+			identity(true),
+			() => { throw new Error('Unknown running status') },
+		],
 	])(RunningStatus.status)
-
 }

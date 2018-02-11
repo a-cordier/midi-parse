@@ -24,7 +24,7 @@ export function InstrumentNameEvent(data, offset) {
 	return {
 		type: Meta.INSTRUMENT_NAME,
 		data: text,
-		next: offset + length + 2
+		next: offset + length + 2,
 	}
 }
 
@@ -34,7 +34,7 @@ export function SequenceNameEvent(data, offset) {
 	return {
 		type: Meta.SEQUENCE_NAME,
 		data: text,
-		next: offset + length + 2
+		next: offset + length + 2,
 	}
 }
 

@@ -5,3 +5,4 @@ dist
 .sass-cache
 *.iml
 .idea
+.nyc_output/

@@ -2,7 +2,7 @@ import test from 'ava'
 import { times } from 'ramda'
 import {
 	isRunningStatus, getBytes, getString, isNewTrack, isEof, isVariableLengthQuantityDelimiter,
-	isMetaEvent, getVariableLengthQuantity, isSysexMessage
+	isMetaEvent, getVariableLengthQuantity, isSysexMessage,
 } from './utils'
 
 function getDataView(bytes = [0]) {
@@ -13,7 +13,7 @@ function getDataView(bytes = [0]) {
 }
 
 test('Top bit being set identifies running status', (t) => {
-	const data = getDataView([parseInt('10000000', 2)])
+	const data = getDataView([0b10000000])
 	t.true(isRunningStatus(data, 0))
 })
 
@@ -48,7 +48,7 @@ test('Is EOF returns true if offset exceed data view boundaries', (t) => {
 })
 
 test('Is variable length delimiter', (t) => {
-	const data = getDataView([parseInt('10000000', 2)])
+	const data = getDataView([0b10000000])
 	t.true(isVariableLengthQuantityDelimiter(data, 0))
 })
 
@@ -64,14 +64,14 @@ test('Is meta event returns false with 11111110', (t) => {
 
 test('Get variable length quantity returns 127 with [128, 127]', (t) => {
 	const bytes = [128, 127]
-	const data  = getDataView(bytes)
-	t.is(getVariableLengthQuantity(data, 0, 127), 127)
+	const data = getDataView(bytes)
+	t.is(getVariableLengthQuantity(data, 0), 127)
 })
 
 test('Get variable length quantity  throws error if it exceeds 4 bytes', (t) => {
 	const bytes = [128, 128, 128, 128, 127]
-	const data  = getDataView(bytes)
-	t.throws(() => getVariableLengthQuantity(data, 0, 127))
+	const data = getDataView(bytes)
+	t.throws(() => getVariableLengthQuantity(data, 0))
 })
 
 test('Is sysex message returns true with [240]', (t) => {
