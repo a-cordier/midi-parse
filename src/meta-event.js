@@ -18,7 +18,7 @@ export const Meta = Object.freeze({
 	SPECIFIC: 0x7F,
 })
 
-export function InstrumentNameEvent(data, offset) {
+export function InstrumentName(data, offset) {
 	const length = data.getUint8(offset + 1)
 	const text = getString(data, offset + 2, length)
 	return {
@@ -28,7 +28,7 @@ export function InstrumentNameEvent(data, offset) {
 	}
 }
 
-export function SequenceNameEvent(data, offset) {
+export function SequenceName(data, offset) {
 	const length = data.getUint8(offset + 1)
 	const text = getString(data, offset + 2, length)
 	return {
@@ -51,7 +51,7 @@ export function SpecificEvent(data, offset) { /* eslint-disable no-param-reassig
 	}
 }
 
-export function SetTempoEvent(data, offset) { /* eslint-disable no-param-reassign, no-plusplus */
+export function SetTempo(data, offset) { /* eslint-disable no-param-reassign, no-plusplus */
 	offset += 2
 	const t = (data.getUint8(offset++) << 16) +
 		(data.getUint8(offset++) << 8) +
@@ -63,7 +63,7 @@ export function SetTempoEvent(data, offset) { /* eslint-disable no-param-reassig
 	}
 }
 
-export function EndOfTrackEvent(_, offset) {
+export function EndOfTrack(_, offset) {
 	return {
 		type: Meta.END_OF_TRACK,
 		next: offset + 2,
@@ -75,13 +75,13 @@ export function MetaEvent(data, offset) { /* eslint-disable no-param-reassign */
 	const value = data.getUint8(offset) // event type
 	switch (value) {
 	case Meta.SET_TEMPO:
-		return SetTempoEvent(data, offset)
+		return SetTempo(data, offset)
 	case Meta.END_OF_TRACK:
-		return EndOfTrackEvent(data, offset)
+		return EndOfTrack(data, offset)
 	case Meta.INSTRUMENT_NAME:
-		return InstrumentNameEvent(data, offset)
+		return InstrumentName(data, offset)
 	case Meta.SEQUENCE_NAME:
-		return SequenceNameEvent(data, offset)
+		return SequenceName(data, offset)
 	default:
 		return SpecificEvent(data, offset)
 	}

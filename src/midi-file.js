@@ -2,8 +2,8 @@ import { times } from 'ramda'
 import { getString } from './utils'
 import { MidiTrack } from './midi-track'
 
-
-export function MidiFile(data) {
+export function MidiFile(buffer) {
+	const data = new DataView(buffer, 0, buffer.length)
 	const header = {
 		type: getString(data, 0, 4),
 		length: data.getUint32(4),
@@ -17,12 +17,10 @@ export function MidiFile(data) {
 	}
 
 	let offset = header.next
-
 	const tracks = times(() => {
 		const track = MidiTrack(data, offset)
 		offset += (track.length + 8) // track data length + track header length
 		return track
 	}, header.tracks)
-
 	return Object.assign({ header }, { tracks })
 }

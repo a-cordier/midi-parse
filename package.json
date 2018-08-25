@@ -87,6 +87,7 @@
     "webpack": "^3.6.0"
   },
   "dependencies": {
-    "ramda": "^0.25.0"
+    "ramda": "^0.25.0",
+    "rxjs": "^5.5.6"
   }
 }

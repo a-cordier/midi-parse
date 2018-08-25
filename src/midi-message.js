@@ -10,6 +10,7 @@ export const Status = Object.freeze({
 	PROGRAM_CHANGE: 0x0C,
 	CHANNEL_AFTER_TOUCH: 0x0D,
 	PITCH_BEND: 0x0E,
+	SYSEX_MESSAGE: 0XF0,
 })
 
 export function Note(data, offset) {
@@ -81,8 +82,8 @@ export function PitchBend(data, offset) {
 
 export function MidiMessage(data, offset) { /* eslint-disable no-param-reassign */
 	if (isRunningStatus(data, offset)) {
-		RunningStatus.status = (data.getUint8(offset) >> 4)
-		RunningStatus.channel = data.getUint8(offset) & 0XF
+		RunningStatus.status = data.getUint8(offset) >> 4
+		RunningStatus.channel = (data.getUint8(offset) & 0XF) + 1
 		offset += 1
 	}
 	return cond([
@@ -92,22 +93,28 @@ export function MidiMessage(data, offset) { /* eslint-disable no-param-reassign 
 		],
 		[
 			equals(Status.NOTE_OFF),
-			() => Object.assign(Note(data, offset), { type: Status.NOTE_OFF })],
+			() => Object.assign(Note(data, offset), { type: Status.NOTE_OFF }),
+		],
 		[
 			equals(Status.NOTE_AFTER_TOUCH),
-			() => NoteAfterTouch(data, offset)],
+			() => NoteAfterTouch(data, offset),
+		],
 		[
 			equals(Status.CONTROL_CHANGE),
-			() => ControlChange(data, offset)],
+			() => ControlChange(data, offset),
+		],
 		[
 			equals(Status.PROGRAM_CHANGE),
-			() => ProgramChange(data, offset)],
+			() => ProgramChange(data, offset),
+		],
 		[
 			equals(Status.CHANNEL_AFTER_TOUCH),
-			() => ChannelAfterTouch(data, offset)],
+			() => ChannelAfterTouch(data, offset),
+		],
 		[
 			equals(Status.PITCH_BEND),
-			() => PitchBend(data, offset)],
+			() => PitchBend(data, offset),
+		],
 		[
 			identity(true),
 			() => { throw new Error('Unknown running status') },
