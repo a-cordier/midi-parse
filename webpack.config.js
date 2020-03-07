@@ -1,16 +1,16 @@
-const path = require('path')
-const CleanPlugin = require('clean-webpack-plugin')
+const path = require('path');
+const CleanPlugin = require('clean-webpack-plugin');
 
-const isProd = env => env === 'prod'
-const isDev = env => !isProd(env)
+const isProd = env => env === 'prod';
+const isDev = env => !isProd(env);
 
 const getPluginConfig = (env) => {
-	const plugins = []
+	const plugins = [];
 	if (isProd(env)) {
-		plugins.push(new CleanPlugin(['dist']))
+		plugins.push(new CleanPlugin(['dist']));
 	}
-	return plugins
-}
+	return plugins;
+};
 
 const config = env => ({
 	entry: {
@@ -52,6 +52,6 @@ const config = env => ({
 		],
 	},
 	plugins: getPluginConfig(env),
-})
+});
 
-module.exports = config
+module.exports = config;

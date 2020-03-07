@@ -1,6 +1,6 @@
-import { cond, equals, identity } from 'ramda'
-import { isRunningStatus } from './utils'
-import { RunningStatus } from './running-status'
+import { cond, equals, identity } from 'ramda';
+import { isRunningStatus } from './utils';
+import { RunningStatus } from './running-status';
 
 export const Status = Object.freeze({
 	NOTE_OFF: 0x08,
@@ -11,7 +11,7 @@ export const Status = Object.freeze({
 	CHANNEL_AFTER_TOUCH: 0x0D,
 	PITCH_BEND: 0x0E,
 	SYSEX_MESSAGE: 0XF0,
-})
+});
 
 export function Note(data, offset) {
 	return {
@@ -21,7 +21,7 @@ export function Note(data, offset) {
 			channel: RunningStatus.channel,
 		},
 		next: offset + 2,
-	}
+	};
 }
 
 export function NoteAfterTouch(data, offset) {
@@ -33,7 +33,7 @@ export function NoteAfterTouch(data, offset) {
 			channel: RunningStatus.channel,
 		},
 		next: offset + 2,
-	}
+	};
 }
 
 export function ControlChange(data, offset) {
@@ -45,7 +45,7 @@ export function ControlChange(data, offset) {
 			channel: RunningStatus.channel,
 		},
 		next: offset + 2,
-	}
+	};
 }
 
 export function ProgramChange(data, offset) {
@@ -56,7 +56,7 @@ export function ProgramChange(data, offset) {
 			channel: RunningStatus.channel,
 		},
 		next: offset + 1,
-	}
+	};
 }
 
 export function ChannelAfterTouch(data, offset) {
@@ -67,7 +67,7 @@ export function ChannelAfterTouch(data, offset) {
 			channel: RunningStatus.channel,
 		},
 		next: offset + 1,
-	}
+	};
 }
 
 export function PitchBend(data, offset) {
@@ -77,14 +77,14 @@ export function PitchBend(data, offset) {
 		b2: data.getUint8(offset),
 		next: offset + 2,
 		channel: RunningStatus.channel,
-	}
+	};
 }
 
 export function MidiMessage(data, offset) { /* eslint-disable no-param-reassign */
 	if (isRunningStatus(data, offset)) {
-		RunningStatus.status = data.getUint8(offset) >> 4
-		RunningStatus.channel = (data.getUint8(offset) & 0XF) + 1
-		offset += 1
+		RunningStatus.status = data.getUint8(offset) >> 4;
+		RunningStatus.channel = (data.getUint8(offset) & 0XF) + 1;
+		offset += 1;
 	}
 	return cond([
 		[
@@ -117,7 +117,7 @@ export function MidiMessage(data, offset) { /* eslint-disable no-param-reassign 
 		],
 		[
 			identity(true),
-			() => { throw new Error('Unknown running status') },
+			() => { throw new Error('Unknown running status'); },
 		],
-	])(RunningStatus.status)
+	])(RunningStatus.status);
 }

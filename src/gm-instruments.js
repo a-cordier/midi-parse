@@ -127,4 +127,4 @@ export const Instruments = Object.freeze({
 	HELICOPTER: 125,
 	APPLAUSE: 126,
 	GUNSHOT: 127,
-})
+});

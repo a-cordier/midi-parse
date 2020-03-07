@@ -1,21 +1,21 @@
 export const RunningStatus = (() => {
-	let status = null
-	let channel = null
+	let status = null;
+	let channel = null;
 	return {
 		reset() {
-			status = null
+			status = null;
 		},
 		get status() {
-			return status
+			return status;
 		},
 		set status(value) {
-			status = value
+			status = value;
 		},
 		get channel() {
-			return channel
+			return channel;
 		},
 		set channel(value) {
-			channel = value
+			channel = value;
 		},
-	}
-})()
+	};
+})();
