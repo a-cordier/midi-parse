@@ -1,4 +1,6 @@
-import { times } from 'ramda';
+export function times(op, length) {
+	return Array.from({ length }).map((_, i) => op(i));
+}
 
 export function isMetaEvent(data, offset) {
 	return 0xFF === data.getUint8(offset);

@@ -1,8 +1,7 @@
 import test from 'ava';
-import { times } from 'ramda';
 import {
 	isRunningStatus, getBytes, getString, isNewTrack, isEof, isVariableLengthQuantityDelimiter,
-	isMetaEvent, getVariableLengthQuantity, isSysexMessage,
+	isMetaEvent, getVariableLengthQuantity, isSysexMessage, times
 } from './utils';
 
 function getDataView(bytes = [0]) {

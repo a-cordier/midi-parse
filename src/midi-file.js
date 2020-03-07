@@ -1,5 +1,4 @@
-import { times } from 'ramda';
-import { getString } from './utils';
+import { getString, times } from './utils';
 import { MidiTrack } from './midi-track';
 
 export function MidiFile(buffer) {
@@ -12,6 +11,7 @@ export function MidiFile(buffer) {
 		division: data.getUint16(12),
 		next: 14,
 	};
+
 	if ('MThd' !== header.type) {
 		throw new Error('Bad MIDI file format');
 	}
