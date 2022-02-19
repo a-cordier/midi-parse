@@ -1,90 +1,58 @@
 {
   "name": "midi-parse",
-  "version": "0.0.6",
-  "description": "Javascript MIDI file parser",
-  "main": "./dist/midi-parse.js",
-  "scripts": {
-    "lint": "eslint .",
-    "test": "nyc ava --verbose",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "build": "webpack --env=prod",
-    "prepublish": "npm run build"
-  },
-  "ava": {
-    "files": [
-      "src/**/*.spec.js"
-    ],
-    "source": [
-      "src/**/*.js",
-      "!src/**/*.spec.js"
-    ],
-    "require": [
-      "babel-register"
-    ],
-    "babel": {
-      "presets": [
-        "env",
-        "@ava/stage-4"
-      ],
-      "plugins": [
-        [
-          "transform-runtime",
-          {
-            "polyfill": false
-          }
-        ]
-      ]
-    }
-  },
-  "nyc": {
-    "exclude": [
-      "**/*.spec.js",
-      "**/*.mock.js",
-      "build"
-    ]
-  },
+  "type": "module",
+  "version": "0.0.10",
+  "description": "JS MIDI file parser",
+  "author": "Antoine Cordier",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/a-cordier/midi-file.git"
+    "url": "git+https://github.com/a-cordier/midi-parse.git"
+  },
+  "bugs": {
+    "url": "https://github.com/a-cordier/midi-parse/issues"
   },
   "keywords": [
     "MIDI",
     "parser",
     "js"
   ],
-  "author": "Antoine Cordier",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/a-cordier/midi-file/issues"
+  "homepage": "https://github.com/a-cordier/midi-parse#readme",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "clean": "npx rimraf dist",
+    "test": "ava",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
+    "prepublish": "npm run build"
   },
-  "homepage": "https://github.com/a-cordier/midi-file#readme",
   "devDependencies": {
-    "@ava/babel-preset-stage-4": "^1.1.0",
-    "ava": "^0.22.0",
-    "babel-eslint": "^7.2.3",
-    "babel-loader": "^7.0.0",
-    "babel-plugin-transform-async-to-generator": "^6.24.1",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-2017": "^0.0.0",
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-es2017": "^6.24.1",
-    "babel-preset-flow": "^6.23.0",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-3": "^6.24.1",
-    "babel-register": "^6.26.0",
-    "clean-webpack-plugin": "^0.1.17",
-    "coveralls": "^3.0.0",
-    "eslint": "^3.19.0",
-    "eslint-config-airbnb": "^15",
-    "eslint-config-webpack": "^1.2.1",
-    "eslint-loader": "^1.7.1",
-    "eslint-plugin-import": "^2",
-    "eslint-plugin-jsx-a11y": "^5",
-    "eslint-plugin-react": "^7",
-    "nyc": "^11.3.0",
-    "sinon": "^3.2.1",
-    "webpack": "^3.6.0"
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "@ava/typescript": "^3.0.1",
+    "ava": "^4.0.1",
+    "eslint": "^8.9.0",
+    "eslint-config-prettier": "^8.4.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.5.1",
+    "tsc-alias": "^1.6.1",
+    "typescript": "^4.5.5"
   },
-  "dependencies": {}
+  "dependencies": {
+    "tsconfig-paths": "^3.12.0",
+    "tscpaths": "^0.0.9"
+  },
+	"ava": {
+		"typescript": {
+			"rewritePaths": {
+				"src/": "dist/"
+			},
+			"compile": "tsc"
+		}
+	}
 }
