@@ -1,29 +1,16 @@
 {
-    "extends": ["eslint-config-airbnb"],
-    "parserOptions": {
-        "ecmaVersion": 2016,
-        "sourceType": "module"
-    },
-    "env": {
-        "browser": true,
-        "node": true
-    },
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:prettier/recommended"
+    ],
     "rules": {
-        "key-spacing": 0,
-        "linebreak-style": 0,
-        "import/extensions": 0,
-        "import/prefer-default-export": 0,
-        "import/no-extraneous-dependencies": 0,
-        "import/no-unresolved": ["error", { "ignore": ["@*"] }],
-        "indent": ["error", "tab"],
-        "no-tabs": 0,
-        "semi": ["error", "always"],
-        "yoda": "off",
-        "no-bitwise": "off",
-        "max-len": ["error", 100, 4]
-    },
-    "globals": {
-        "test": false,
-        "sinon": false
-    }
-}
+        "semi": "error",
+      }
+  }
